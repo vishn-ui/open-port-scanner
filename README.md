@@ -1,45 +1,61 @@
+Setup and Installation
+Follow these steps to get the analyzer running on your local machine.
+
+1. Clone the Repository
+Bash
+
+git clone https://github.com/your-username/ai-phishing-analyzer.git
+cd ai-phishing-analyzer
+2. Create a requirements.txt file
+Create a file named requirements.txt in the project directory and add the following line:
+
+google-generativeai
+3. Install Dependencies
+Install the necessary Python library using pip:
+
+Bash
+
 pip install -r requirements.txt
+4. Get Your Google AI API Key
+Visit Google AI Studio.
 
-ESP32 Setup
-Open either .ino file in the Arduino IDE.
+Click "Get API key" and create one in a new project.
 
-Go to Tools > Board and select your ESP32 model.
+Copy the generated API key.
 
-Go to Tools > Port and select the correct serial port.
+5. Set Up Your API Key
+It's critical to set your API key as an environment variable for security.
 
-Update the WiFi credentials (ssid and password) and the HOST_URL in the firmware to match your network and the IP address of the computer running the server.
+On macOS/Linux:
 
-Upload the firmware to your ESP32.
-
-Usage
-Option A: Running the Direct PC Reporter
-This is the most efficient way to monitor your PC's network ports. The ESP32 is not used.
-
-1. Start the Receiver Server
-In your first terminal, run the Flask server:
+Add the following line to your ~/.zshrc or ~/.bash_profile file to make the key available in all terminal sessions:
 
 Bash
-python3 receiver_server.py
 
-The server will start and listen for reports.
+export GOOGLE_API_KEY="PASTE_YOUR_API_KEY_HERE"
+Then, reload your terminal or run source ~/.zshrc.
 
-2. Start the PC Reporter Script
-In a second terminal, run the direct reporter script.
-Note: On macOS and Linux, sudo is required for psutil to access network connection details.
+On Windows:
+
+You can set it for the current terminal session with:
 
 Bash
-sudo python3 pc_reporter_direct.py
 
-You will now see reports about your PC's listening ports appearing in the server terminal every 10 seconds.
+set GOOGLE_API_KEY="PASTE_YOUR_API_KEY_HERE"
+## 🚀 Usage
+The script runs in an interactive mode, waiting for you to paste the email content.
 
-Option B: Running the ESP32 as a Standalone Sensor
-This turns your ESP32 into an independent IoT device.
+Run the script from your terminal:
 
-1. Start the Receiver Server
-In a terminal, run the Flask server:
 Bash
-python3 receiver_server.py
 
-2. Power on the ESP32
-Power your ESP32 (flashed with esp32_sensor_reporter.ino) via USB or another power source. Once it connects to your WiFi, it will begin sending its WiFi signal strength to the server every 10 seconds. You will see these reports appear in the server terminal.
+python ai_analyzer.py
+Paste the raw email content into the terminal. This should include the headers (From:, Subject:, etc.) for the most accurate analysis.
 
+Signal the end of input:
+
+On macOS/Linux, press Ctrl + D.
+
+On Windows, press Ctrl + Z, then Enter.
+
+The script will then contact the Gemini API and print the detailed analysis.
